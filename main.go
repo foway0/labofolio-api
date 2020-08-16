@@ -1,52 +1,35 @@
 package main
 
 import (
-	"encoding/json"
+	"./src/middleware"
+	"./src/routes"
+	"./src/shared"
+	"fmt"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
-	"net/http"
 )
 
-// FIXME import
-type ping struct {
-	Id        int
-	Subject   string
-	ContentMd string
-}
-type pings struct {
-	Count int
-	Rows []ping
+func Init(env shared.Env, config shared.Config) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Set("env", env)
+		c.Set("config", config)
+	}
 }
 
 func main() {
+	// init env & config
+	env := shared.GetEnv()
+	config := shared.GetConfig(env)
+
 	router := gin.Default()
 
-	// FIXME import
-	router.GET("/hello", func(c *gin.Context) {
-		c.String(http.StatusOK, "Hello World!!")
-	})
+	// add middleware
+	router.Use(Init(env, config))
+	router.Use(middleware.Cors(config.Web.Cors))
 
-	// FIXME import
-	router.GET("/ping", func(c *gin.Context) {
-		// FOR TEST Write Happy Case
-		url := "http://local-api:3000/tests"
-		req, _ := http.NewRequest("GET", url, nil)
-		req.Header.Set("Content-Type", "application/json")
+	// add routes
+	router.GET("/ping", routes.Ping)
+	router.GET("/tests", routes.Tests)
 
-		client := new(http.Client)
-		res, _ := client.Do(req)
-		defer res.Body.Close()
-		body, _ := ioutil.ReadAll(res.Body)
-		var data pings
-		json.Unmarshal(body, &data)
-
-		// FIXME cors middlewares
-		c.Header("Access-Control-Allow-Origin", "https://localhost:8080")
-		c.Header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, HEAD, OPTIONS")
-		c.Header("Access-Control-Allow-Headers", "Content-Type")
-		c.JSON(http.StatusOK, data)
-	})
-
-	// FIXME environment
-	router.Run(":3000")
+	// server start
+	router.Run(fmt.Sprintf(":%d", env.ServicePort))
 }
