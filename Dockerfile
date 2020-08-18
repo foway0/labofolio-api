@@ -6,7 +6,7 @@ WORKDIR $HOME
 ADD main.go $HOME/main.go
 ADD src $HOME/src
 
-RUN go get -u github.com/oxequa/realize github.com/gin-gonic/gin github.com/kelseyhightower/envconfig
+RUN go get -u github.com/oxequa/realize github.com/gin-gonic/gin github.com/kelseyhightower/envconfig github.com/go-redis/redis
 
 EXPOSE 3000
 
