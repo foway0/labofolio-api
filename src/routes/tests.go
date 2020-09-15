@@ -12,20 +12,21 @@ import (
 )
 
 type ping struct {
-	Id        int
-	Subject   string
-	ContentMd string
+	Id        int `json:"id"`
+	Subject   string `json:"subject"`
+	ContentMd string `json:"content_md"`
 }
 
 type pings struct {
-	Count int
-	Rows []ping
+	Count int `json:"count"`
+	Rows []ping `json:"rows"`
 }
 
 func Tests (c *gin.Context) {
 	env := c.MustGet("env").(shared.Env)
 	rdb := c.MustGet("rdb").(*redis.ClusterClient)
 	var ctx = context.Background()
+	rdb.Del(ctx, "tests")
 	tests, _ := rdb.Get(ctx, "tests").Bytes()
 
 	var data pings
