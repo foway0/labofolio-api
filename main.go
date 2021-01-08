@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"github.com/foway0/labofolio-web-bff/hoge"
+	"github.com/foway0/labofolio-web-bff/grpc_spec"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"log"
@@ -10,12 +10,12 @@ import (
 )
 
 type server struct {
-	hoge.UnimplementedGreeterServer
+	grpc_spec.UnimplementedGreeterServer
 }
 
-func (s *server) SayHello(ctx context.Context, in *hoge.HelloRequest) (*hoge.HelloReply, error) {
+func (s *server) SayHello(ctx context.Context, in *grpc_spec.HelloRequest) (*grpc_spec.HelloReply, error) {
 	log.Printf("Received: %v", in.GetName())
-	return &hoge.HelloReply{Message: "Hello " + in.GetName()}, nil
+	return &grpc_spec.HelloReply{Message: "Hello " + in.GetName()}, nil
 }
 
 func main() {
@@ -24,7 +24,7 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
-	hoge.RegisterGreeterServer(s, &server{})
+	grpc_spec.RegisterGreeterServer(s, &server{})
 	// local only???
 	reflection.Register(s)
 	if err := s.Serve(lis); err != nil {
