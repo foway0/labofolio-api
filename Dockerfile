@@ -6,7 +6,7 @@ WORKDIR $HOME
 ADD main.go $HOME/main.go
 ADD go.mod $HOME/go.mod
 ADD go.sum $HOME/go.sum
-ADD grpc_spec $HOME/grpc_spec
+ADD grpc_specs $HOME/grpc_spec
 
 RUN go mod download
 

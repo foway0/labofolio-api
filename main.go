@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"github.com/foway0/labofolio-web-bff/grpc_spec"
+	"github.com/foway0/labofolio-web-bff/grpc_specs"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"log"
