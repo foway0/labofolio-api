@@ -10,4 +10,4 @@ ADD grpc_specs $HOME/grpc_spec
 
 RUN go mod download
 
-EXPOSE 4000
+EXPOSE 3001

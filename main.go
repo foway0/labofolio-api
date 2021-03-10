@@ -19,7 +19,7 @@ func (s *server) SayHello(ctx context.Context, in *grpc_spec.HelloRequest) (*grp
 }
 
 func main() {
-	lis, err := net.Listen("tcp", ":4000")
+	lis, err := net.Listen("tcp", ":3001")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
